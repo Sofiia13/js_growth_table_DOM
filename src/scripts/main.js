@@ -2,15 +2,20 @@
 
 const table = document.querySelector('.field');
 
-let rowsQuantity = table.querySelectorAll('tr').length;
-
-const firstRow = table.querySelector('tr');
-let columnsQuantity = firstRow ? firstRow.children.length : 0;
+function recalcSizes() {
+  const rowsQuantity = table.querySelectorAll('tr').length;
+  const firstRow = table.querySelector('tr');
+  const columnsQuantity = firstRow ? firstRow.children.length : 0;
+  return { rowsQuantity, columnsQuantity };
+}
 
 const buttons = document.querySelectorAll('.button');
 
+
 function updateButtonsState() {
-  buttons.forEach(button => {
+  const { rowsQuantity, columnsQuantity } = recalcSizes();
+
+  buttons.forEach((button) => {
     if (button.classList.contains('append-row')) {
       button.disabled = rowsQuantity >= 10;
     } else if (button.classList.contains('remove-row')) {
@@ -23,8 +28,9 @@ function updateButtonsState() {
   });
 }
 
-buttons.forEach(but => {
+buttons.forEach((but) => {
   but.addEventListener('click', () => {
+    let { rowsQuantity, columnsQuantity } = recalcSizes();
     const tr = document.querySelectorAll('table tr');
 
     if (but.classList.contains('append-row')) {
@@ -33,24 +39,27 @@ buttons.forEach(but => {
 
         for (let i = 0; i < columnsQuantity; i++) {
           const cell = document.createElement('td');
+
           newRow.appendChild(cell);
         }
 
         table.appendChild(newRow);
 
         rowsQuantity++;
-    }
+      }
     } else if (but.classList.contains('remove-row')) {
       if (rowsQuantity > 2) {
         const lastRow = tr[tr.length - 1];
+
         lastRow.remove();
 
         rowsQuantity--;
       }
     } else if (but.classList.contains('append-column')) {
       if (columnsQuantity < 10) {
-          tr.forEach(row => {
+        tr.forEach((row) => {
           const cell = document.createElement('td');
+
           row.appendChild(cell);
         });
 
@@ -58,7 +67,7 @@ buttons.forEach(but => {
       }
     } else if (but.classList.contains('remove-column')) {
       if (columnsQuantity > 2) {
-        tr.forEach(row => {
+        tr.forEach((row) => {
           row.lastElementChild?.remove();
         });
 
@@ -67,6 +76,6 @@ buttons.forEach(but => {
     }
     updateButtonsState();
   });
-})
+});
 
 updateButtonsState();
