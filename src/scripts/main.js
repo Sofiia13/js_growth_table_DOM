@@ -6,11 +6,11 @@ function recalcSizes() {
   const rowsQuantity = table.querySelectorAll('tr').length;
   const firstRow = table.querySelector('tr');
   const columnsQuantity = firstRow ? firstRow.children.length : 0;
+
   return { rowsQuantity, columnsQuantity };
 }
 
 const buttons = document.querySelectorAll('.button');
-
 
 function updateButtonsState() {
   const { rowsQuantity, columnsQuantity } = recalcSizes();
@@ -44,16 +44,12 @@ buttons.forEach((but) => {
         }
 
         table.appendChild(newRow);
-
-        rowsQuantity++;
       }
     } else if (but.classList.contains('remove-row')) {
       if (rowsQuantity > 2) {
         const lastRow = tr[tr.length - 1];
 
         lastRow.remove();
-
-        rowsQuantity--;
       }
     } else if (but.classList.contains('append-column')) {
       if (columnsQuantity < 10) {
@@ -62,16 +58,12 @@ buttons.forEach((but) => {
 
           row.appendChild(cell);
         });
-
-        columnsQuantity++;
       }
     } else if (but.classList.contains('remove-column')) {
       if (columnsQuantity > 2) {
         tr.forEach((row) => {
           row.lastElementChild?.remove();
         });
-
-        columnsQuantity--;
       }
     }
     updateButtonsState();
